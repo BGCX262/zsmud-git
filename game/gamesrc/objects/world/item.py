@@ -13,7 +13,7 @@ class Item(Object):
         self.db.attributes = { 'weight': 1.0, 'value': { 'dollars': 5 }, 'equipable': False, 
                                 'quest_item': False, 'item_slot': None, 'is_equipped': False, 
                                 'display_name': None, 'lootable': False , 'damage_dice': None
-                                'critical_range': None, 'weapon_type': None, 
+                                'critical_range': None, 'weapon_type': None, 'useable': None,
                                  }
         self.db.attribute_bonuses = {'strength': 0, 'agility': 0, 'perception': 0, 
                                         'endurance': 0  'attack_bonus': 0, 'armor_class': 0, 

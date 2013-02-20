@@ -7,7 +7,7 @@ class Npc(Object):
     """
 
     def at_object_creation(self):
-        self.db.attributes = { 'strength': 10, 'endurance': 10, 'perception': 10, 'wisdom': 10, 'luck': 5, 'health': 0, 'stamina': 0, 'temp_health': 0, 'temp_stamina': 0, 'level': 1, 'exp_needed': 300, 'exp': 0, 'total_exp': 0, 'exp_reward': 0, 'currency_reward': 0}
+        self.db.attributes = { 'strength': 10, 'endurance': 10, 'perception': 10, 'agility': 10, 'luck': 5, 'health': 0, 'stamina': 0, 'temp_health': 0, 'temp_stamina': 0, 'level': 1, 'exp_needed': 300, 'exp': 0, 'total_exp': 0, 'exp_reward': 0, 'currency_reward': 0, 'persona': None, 'visible': True, 'perception_threshold': 20}
         self.db.combat_attributes = {'attack_bonus': 1, 'damage_threshold': 0, 'armor_class': 1, 'defense_rating': 1}
         self.db.equipment = {'weapon': None, 'protection': None}
         attributes = self.db.attributes
@@ -17,7 +17,52 @@ class Npc(Object):
         attributes['temp_stamina'] = attributes['stamina']
         self.db.attributes = attributes
         self.db.target = None
+        self.db.difficulty_rating = 'average' #(average, hard, very_hard, impossible)
         
+
+
+    def generate_attributes(self):
+        a = self.db.attributes
+        if self.db.difficulty_rating is 'average':
+            strength = random.randrange(10, 25)
+            endurance = random.randrange(10, 25)
+            perception = random.randrange(10, 25)
+            agility = random.randrange(10, 25)
+            luck = random.randrange(5, 15)
+            currency_reward = random.randrange(1, 10)
+            exp_reward = random.randrange(25, 35)
+        elif self.db.difficulty_rating is 'hard':
+            strength = random.randrange(15, 35)
+            endurance = random.randrange(15, 35)
+            perception = random.randrange(15, 35)
+            agility = random.randrange(15, 35)
+            luck = random.randrange(10, 20)
+            currency_reward = random.randrange(8, 20)
+            exp_reward = random.randrange(35, 50)
+        elif self.db.difficulty_rating is 'very_hard':
+            strength = random.randrange(20, 40)
+            endurance = random.randrange(20, 40)
+            perception = random.randrange(20, 40)
+            agility = random.randrange(20, 40)
+            luck = random.randrange(15, 30)
+            currency_reward = random.randrange(20, 30)
+            exp_reward = random.randrange(50, 75)
+        ca = self.db.combat_attributes
+        ca['attack_bonus'] = (a['strength'] + a['agility']) / 10
+        ca['damage_threshold'] = (a['strength'] + a['endurance']) / 10
+        ca['armor_class'] = (a['agility'] + a['perception']) / 10
+        ca['defense_rating'] = ca['damage_threshold'] + ca['armor_class']
+        a['health'] = a['endurance'] * 4
+        a['stamina'] = a['endurance'] * 2
+        a['temp_health'] = a['health']
+        a['temp_stamina'] = a['stamina']
+        self.db.attribites = a
+        self.db.combat_attributes = ca
+        
+
+    #############################
+    #COMBAT RELATED FUNCTIONS   #
+    #############################
 
     def take_damage(self, damage):
         a = self.db.attributes
@@ -56,7 +101,6 @@ class Npc(Object):
         t = self.db.target
         w = e['weapon']
         attack_roll = self.attack_roll()
-        print "in attack block"
         if attack_roll >= t.db.combat_attributes['defense_rating']:
             damage = self.get_damage()
             unarmed_hit_texts = [ '%s punches you relentlessly for %s damage!' % (self.name, damage),           

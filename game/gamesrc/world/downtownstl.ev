@@ -1,0 +1,26 @@
+#
+#ZSMUD BATCH FILE
+#Zone: Downtown St. Louis
+#This file builds out the needed rooms for the downtown stl zone, starting with the 
+#
+@dig Tucker and Olive;downtownstl_room;dtstl1: world.rooms.WorldRoom
+#
+@teleport Tucker and Olive
+#
+@desc
+You are standing at the corner of Tucker Blvd and Olive.  To your immediate east is the heart of
+
+downtown St. Louis, or rather what is left of it.  To the west lays the county and suburbs of what
+
+used to be a decently nice place to live.  The smell of smoke and blood fill your nostrils making
+
+your stomach twist and turn in disgust.  About 100 feet or so across Olive, to the North is an old 
+
+Parking Garage and an Old Papa John's pizzeria. To the south lays the old Courthouse Building, and
+
+further down Tucker is the old Police Department building.  Littering the street are burned out 
+
+cars, decomposing corpses and more blood than you have ever seen.  This is where it must have all
+
+started.
+

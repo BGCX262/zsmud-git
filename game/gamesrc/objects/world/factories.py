@@ -55,17 +55,60 @@ class ItemFactory(Object):
                     prefix = random.choice(['Amazing', 'Excellent', 'Spectacular'])
                     name = prefix + name
             
-                gun = create_object("game.gamesrc.objects.world.item.Item", key=name, location=self)
-                a = gun.db.attributes
+                item = create_object("game.gamesrc.objects.world.item.Item", key=name, location=self)
+                a = item.db.attributes
                 a['damage_dice'] = dd
                 a['weapon_type'] = type
                 a['item_slot'] = 'weapon'
                 a['equipable'] = True
-                gun.db.type = c
+                item.db.type = c
+                item.db.attributes = a
             elif 'scavenging' in c:
-                pass
+                rn = random.random()
+                first_pass_choices = {}
+                second_pass_choices = []
+                for i in self.db.scavenging_items:
+                    if self.db.scavenging_items[i] >= rn:
+                        first_pass_choices['%s' % i] = self.db.scavenging_items[i]
+                
+                rn = random.random()        
+                for i in first_pass_choices:
+                    if first_pass_choices[i] >= rn:
+                       second_pass_choices.append(i)
+                itemname = random.choice(second_pass_choices)
+                item = create_object("game.gamesrc.objects.world.item.Item", key=itemname, location self)
+                a = item.db.attributes
+                item.db.type = c
+                a['equipable'] = False
+                a['consumable'] = True
+                item.db.attribtes = a
             elif 'melee' in c:
                 pass
+            loot_set.append(item)
 
 
-                
+class MobFactory(Object):
+    """
+    Main Mob creation class
+    """
+
+    def at_object_creation(self):
+        self.db.mob_set = []
+        self.db.zone_type = None
+        self.db.mob_names = ['Irradiated Rat', 'Survivor Scavenger', 'Infected Survivor', 'Shambling Corpse', 'Irradiated Dog', 'Reanimated Corpse', 'Crazed Looter']
+        self.db.difficulty = 'average'
+        self.db.level_range = (1, 7)
+
+    def create_mob_set(self, number_of_mobs):
+        for x in range(0, number_of_mobs):
+            mob_name = random.choice(self.db.mob_names)
+            mob_obj = create_object("game.gamesrc.objects.world.npc.Npc", key=mob_name, location=self)
+            a = mob_obj.db.attributes
+            a['level'] = random.randrange(self.db.level_range[0], self.db.level_range[1])
+            mob_obj.db.attributes = a
+            mob_obj.db.difficulty = self.db.difficulty
+            mob_obj.generate_attributes()
+            self.db.mob_set.append(mob_obj)
+        return self.db.mob_set
+            
+        
