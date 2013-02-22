@@ -16,8 +16,10 @@ class Npc(Object):
         attributes['stamina'] = attributes['endurance'] * 2
         attributes['temp_stamina'] = attributes['stamina']
         self.db.attributes = attributes
+        self.db.in_combat = False
         self.db.target = None
         self.db.difficulty_rating = 'average' #(average, hard, very_hard, impossible)
+        self.aliases.append('mob_runner')
         
 
 
@@ -48,6 +50,13 @@ class Npc(Object):
             currency_reward = random.randrange(20, 30)
             exp_reward = random.randrange(50, 75)
         ca = self.db.combat_attributes
+        a['strength'] = strength
+        a['endurance'] = endurance
+        a['perception'] = perception
+        a['agility'] = agility
+        a['luck'] = luck
+        a['exp_reward'] = exp_reward
+        a['currency_reward'] = currency_reward
         ca['attack_bonus'] = (a['strength'] + a['agility']) / 10
         ca['damage_threshold'] = (a['strength'] + a['endurance']) / 10
         ca['armor_class'] = (a['agility'] + a['perception']) / 10
@@ -58,6 +67,21 @@ class Npc(Object):
         a['temp_stamina'] = a['stamina']
         self.db.attribites = a
         self.db.combat_attributes = ca
+
+    def tick(self):
+        """
+        Main function for all things needing to be done/checked every time the mob tick
+        script fires itself (health and mana regen, kos checks etc etc)
+        """
+        a = self.db.attributes
+        if a['temp_health'] < a['health'] and not self.db.in_combat:
+            pth = int(a['health'] * .02) + 1
+            a['temp_health'] = a['temp_health'] + pth
+            if a['temp_health'] > a['health']:
+                a['temp_health'] = a['health']
+
+        self.db.attributes = a
+            
         
 
     #############################

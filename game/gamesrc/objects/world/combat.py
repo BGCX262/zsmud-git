@@ -43,6 +43,7 @@ class CombatManager(Object):
             pc.msg("{CYou have destroyed %s!{n" % npc.name)
             if npc.db.attributes['exp_reward'] > 0:
                 pc.award_exp(npc.db.attributes['exp_reward'])
+                pc.award_exp(npc.db.attributes['exp_reward'], archtype='soldier')
             if npc.db.attributes['currency_reward'] > 0:
                 pc.award_currency(npc.db.attributes['currency_reward'])
             npc.death()

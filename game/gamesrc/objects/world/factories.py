@@ -1,5 +1,5 @@
 from ev import Object, create_object
-
+import random
 
 class ItemFactory(Object):
     """
@@ -14,13 +14,13 @@ class ItemFactory(Object):
         self.db.gun_shotgun_names = [ 'SPAS-12', 'UTS-15', 'KSG', 'Mossberg 500', 'Remington 870' ]
         self.db.gun_smg_names =  [ 'AK74U', 'Uzi', 'Mac 11', 'MP5K', 'MP5', 'Sepctre M4' ]
         self.db.loot_ratings = ['below average', 'fair', 'good', 'excellent']
-        self.db.scavenging_items {'Can of Beans': .08, 'Bag of Rice': .10, 'Metal Scraps': .35, 'Wood Scraps':.35, 'Wood planks':.15, 'Sheet metal': .10, 'Old tire rubber':.40, 
+        self.db.scavenging_items = {'Can of Beans': .08, 'Bag of Rice': .10, 'Metal Scraps': .35, 'Wood Scraps':.35, 'Wood planks':.15, 'Sheet metal': .10, 'Old tire rubber':.40, 
                                     'Old can of Spinach':.12, 'Bottle of Water':.07, 'Old can of Soda': .20, 'Candybar': .20, 'Can of Carrots': .15, 'Can of Green beans': .20,
                                     'Bag of Northern Beans': .30, 'Can of Oranges': .15, 'Can of Pears': .20, 'Can of Peaches': .20, 'Nails and Screws': .30, 'Nuts and Bolts': .40,
                                     'First Aid Kit': .25, 'Pain Reliever': .40 }
 
    
-    def create_lootset(self, loot_rating='below average', number_of_items):
+    def create_lootset(self, number_of_items, loot_rating='below average'):
         loot_set = []
 
         for x in range(0, number_of_items):
@@ -51,7 +51,7 @@ class ItemFactory(Object):
                 elif 'good' in loot_rating:
                     prefix = 'New'
                     name = prefix + name
-                elif 'excellent' in loot_rating
+                elif 'excellent' in loot_rating:
                     prefix = random.choice(['Amazing', 'Excellent', 'Spectacular'])
                     name = prefix + name
             
@@ -76,7 +76,7 @@ class ItemFactory(Object):
                     if first_pass_choices[i] >= rn:
                        second_pass_choices.append(i)
                 itemname = random.choice(second_pass_choices)
-                item = create_object("game.gamesrc.objects.world.item.Item", key=itemname, location self)
+                item = create_object("game.gamesrc.objects.world.item.Item", key=itemname, location=self)
                 a = item.db.attributes
                 item.db.type = c
                 a['equipable'] = False
@@ -100,6 +100,7 @@ class MobFactory(Object):
         self.db.level_range = (1, 7)
 
     def create_mob_set(self, number_of_mobs):
+        self.db.mob_set = []
         for x in range(0, number_of_mobs):
             mob_name = random.choice(self.db.mob_names)
             mob_obj = create_object("game.gamesrc.objects.world.npc.Npc", key=mob_name, location=self)

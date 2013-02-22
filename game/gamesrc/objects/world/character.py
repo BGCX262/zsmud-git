@@ -33,7 +33,7 @@ class SurvivorClass(Character):
         attributes['stamina'] = attributes['endurance'] * 2
         attributes['temp_stamina'] = attributes['stamina']
         self.db.attributes = attributes
-        self.aliases += 'survivor'
+        self.aliases += 'character_runner'
 
     def at_post_login(self):
         self.cmdset.add(CharacterCmdSet)
@@ -55,7 +55,10 @@ class SurvivorClass(Character):
         """
         attributes = self.db.attributes
         archtypes = self.db.archtypes
-        self.msg("{CYou have earned %s experience.{n" % exp)     
+        if archtype is None:
+            self.msg("{CYou have earned %s experience.{n" % exp)     
+        else:
+            self.msg("{CYou have earned %s experience in archtype: %s" % (exp, archtype)) 
         if archtype is not None:
             archtypes[archtype]['exp'] += exp
             archtypes[archtype]['total_exp'] += exp
@@ -106,6 +109,20 @@ class SurvivorClass(Character):
             self.db.archtypes = archtypes
         else:
             return
+
+    def tick(self):
+        """
+        Main function for all things needing to be done/checked every time the mob tick
+        script fires itself (health and mana regen, kos checks etc etc)
+        """
+        a = self.db.attributes
+        if a['temp_health'] < a['health'] and not self.db.in_combat:
+            pth = int(a['health'] * .02) + 1
+            a['temp_health'] = a['temp_health'] + pth
+            if a['temp_health'] > a['health']:
+                a['temp_health'] = a['health']
+
+        self.db.attributes = a
 
     def take_damage(self, damage):
         """

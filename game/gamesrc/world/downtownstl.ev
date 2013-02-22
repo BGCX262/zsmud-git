@@ -3,7 +3,7 @@
 #Zone: Downtown St. Louis
 #This file builds out the needed rooms for the downtown stl zone, starting with the 
 #
-@dig Tucker and Olive;downtownstl_room;dtstl1: world.rooms.WorldRoom
+@dig Tucker and Olive;downtown_stl_room;dtstl1: world.room.WorldRoom
 #
 @teleport Tucker and Olive
 #
@@ -23,4 +23,49 @@ further down Tucker is the old Police Department building.  Littering the street
 cars, decomposing corpses and more blood than you have ever seen.  This is where it must have all
 
 started.
+#
+@set here/decor_objects = { 'Destroyed Car': 'A completely burned out and destroyed car that has ben flipped over on its side.' }
+#
+@dig Tucker and Locust Avenue;downtown_stl_room;dtstl2: world.room.WorldRoom
+#
+@open north;n = dtstl2
+#
+@desc north =
+Tucker Blvd continues on to the North as well as the south.  Heading north will take you past
 
+the pizzeria to the corner of Tucker and Locust Avenue.
+#
+@dig Tucker And Pine Avenue;downtown_stl_room;dtstl3: world.room.WorldRoom
+#
+@open south;s = dtstl3
+#
+@desc south = 
+Pine avenue lays in this direction, as well as the old City courthouse and Police Department.
+#
+north
+#
+@desc
+As you approach the corner of Tucker and Locust Avenue, you notice that the pizzeria has been 
+
+remodeled to have no windows.  This was likely the work of scavengers and looters during the early
+
+hours of the virus spreading.  Many businesses and homes were complete ransacked and destroyed
+
+once the shit really hit the fan and families were eating their neighbors. Inside the pizzeria
+
+it is completely dark, however there may be something worthwhile in there if you can brave the 
+
+darkness to try and find it.  As you take in your surroundings you think you hear the shuffle
+
+of feet off in the distance to the north.
+#
+@set here/decor_object = { 'Pile of corpses': 'A medium sized pile of dead bodies, all will bullet holes in the head.  The smell is a mixture of decay, blood and decomposition.' }
+#
+@teleport dtstl1
+#
+south
+#
+@desc
+Placheholder description until I feel like writing something good here.
+#
+@teleport Limbo
