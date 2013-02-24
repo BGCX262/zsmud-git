@@ -190,9 +190,12 @@ class SurvivorClass(Character):
                                 'You unlease a hail of lead upon %s dealing %s damage.' % (t.name, damage),
                             ]
             melee_hit_texts = []
+            print w.db.type
+            print w
             if w is None:
                 ht = random.choice(unarmed_hit_texts)
-            elif w is not None and w.type is 'gun':
+            if 'gun' in w.db.type:
+                print w
                 ht = random.choice(gun_hit_texts)
             self.msg(ht) 
            
@@ -213,7 +216,7 @@ class SurvivorClass(Character):
             damage = random.randrange(damagedice[0], damagedice[1])
             return damage
         else:
-            damagedice = w.db.damage
+            damagedice = w.db.attributes['damage_dice']
             damage = random.randrange(damagedice[0], damagedice[1])
             return damage
 

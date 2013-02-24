@@ -17,6 +17,7 @@ class Npc(Object):
         attributes['temp_stamina'] = attributes['stamina']
         self.db.attributes = attributes
         self.db.in_combat = False
+        self.db.corpse = False
         self.db.target = None
         self.db.difficulty_rating = 'average' #(average, hard, very_hard, impossible)
         self.aliases.append('mob_runner')
@@ -25,15 +26,17 @@ class Npc(Object):
 
     def generate_attributes(self):
         a = self.db.attributes
-        if self.db.difficulty_rating is 'average':
-            strength = random.randrange(10, 25)
-            endurance = random.randrange(10, 25)
-            perception = random.randrange(10, 25)
-            agility = random.randrange(10, 25)
+        print "generating attributes: %s" % self.db.difficulty_rating
+        if self.db.difficulty_rating in 'average':
+            print "average logic"
+            strength = random.randrange(10, 18 )
+            endurance = random.randrange(10, 18)
+            perception = random.randrange(10, 18)
+            agility = random.randrange(10, 18)
             luck = random.randrange(5, 15)
             currency_reward = random.randrange(1, 10)
             exp_reward = random.randrange(25, 35)
-        elif self.db.difficulty_rating is 'hard':
+        elif self.db.difficulty_rating in 'hard':
             strength = random.randrange(15, 35)
             endurance = random.randrange(15, 35)
             perception = random.randrange(15, 35)
@@ -41,7 +44,7 @@ class Npc(Object):
             luck = random.randrange(10, 20)
             currency_reward = random.randrange(8, 20)
             exp_reward = random.randrange(35, 50)
-        elif self.db.difficulty_rating is 'very_hard':
+        elif self.db.difficulty_rating in 'very_hard':
             strength = random.randrange(20, 40)
             endurance = random.randrange(20, 40)
             perception = random.randrange(20, 40)
@@ -65,8 +68,9 @@ class Npc(Object):
         a['stamina'] = a['endurance'] * 2
         a['temp_health'] = a['health']
         a['temp_stamina'] = a['stamina']
-        self.db.attribites = a
+        self.db.attributes = a
         self.db.combat_attributes = ca
+        print "attr gen complete"
 
     def tick(self):
         """
@@ -90,9 +94,8 @@ class Npc(Object):
 
     def take_damage(self, damage):
         a = self.db.attributes
+        print a['temp_health']
         a['temp_health'] -= damage
-        if a['temp_health'] <= 0:
-            self.death()
         self.db.attributes = a
     
     def get_damage(self):
@@ -153,7 +156,8 @@ class Npc(Object):
 
     def death(self):
         self.db.target = None
-        self.aliases += 'corpse'
+        self.db.corpse = True
+        self.aliases.append('corpse')
         self.key = "Corpse of %s" % self.name
         
         

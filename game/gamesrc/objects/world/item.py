@@ -12,13 +12,29 @@ class Item(Object):
         self.db.type = None
         self.db.attributes = { 'weight': 1.0, 'value': { 'dollars': 5 }, 'equipable': False, 
                                 'quest_item': False, 'item_slot': None, 'is_equipped': False, 
-                                'display_name': None, 'lootable': False , 'damage_dice': None
+                                'display_name': None, 'lootable': False , 'damage_dice': None,
                                 'critical_range': None, 'weapon_type': None, 'useable': None,
                                  }
         self.db.attribute_bonuses = {'strength': 0, 'agility': 0, 'perception': 0, 
-                                        'endurance': 0  'attack_bonus': 0, 'armor_class': 0, 
+                                        'endurance': 0,  'attack_bonus': 0, 'armor_class': 0, 
                                         'damage_threshold': 0, 'defense_rating': 0, 'luck': 0}
 
+    def generate_attributes(self):
+        a = self.db.attributes
+        if self.key in ['Bag of', 'Can of', 'Candybar']:
+            a['item_slot'] = 'food'
+        elif 'Bottle of' in self.key:
+            a['item_slot'] = 'drink'
+        elif self.key in ['Wood Scraps', 'Metal Scraps', 'Wood Planks', 'Sheet Metal', 'Nails and Screws', 'Nuts and Bolt']:
+            a['item_slot'] = 'materials'
+            a['useable'] = True
+        elif self.key in ['First aid', 'Pain Reliever']:
+            a['item_slot'] = 'aid'
+            a['useable'] = True
+    
+        
+        
+            
     def on_equip(self):
         ca = self.location.db.attributes
         for b in self.db.attribute_bonuses:
