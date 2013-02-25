@@ -55,14 +55,20 @@ class ZoneRunner(Script):
         self.persistent = True
         self.desc = "controls the subscription list of zones"
         self.db.subscribers = []
+        self.db.corpses = []
     
     def at_script_start(self):
         self.ndb.subscribers = [search.objects(dbref) for dbref in self.db.subscribers]
+        self.ndb.corpses = [search.objects(dbref) for dbref in self.db.corpses]
         
     def at_repeat(self):
         self.ndb.subscribers = search.objects('zone_manager')
+        self.ndb.corpses = search.objects('corpse')
         #print "ZoneRunner => tick() [ %s zones in run ]" % len(self.db.subscribers)
+        print "mob_level()"
         [z.figure_mob_levels() for z in self.ndb.subscribers]
+        print "corpse delete"
+        [c.delete() for c in self.ndb.corpses if c.db.destroy_me is True]
 
     def at_stop(self):
         self.db.subscribers = [z.dbref for z in self.ndb.subscribers]

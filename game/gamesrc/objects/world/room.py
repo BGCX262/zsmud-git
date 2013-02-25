@@ -24,8 +24,11 @@ class Zone(Object):
             mob_set = []
             print "checking %s" % room.name
             mobs = room.db.mobs
+            print mobs
 
             for mob in room.db.mobs:
+                if mob.db.corpse:
+                    continue
                 self.db.mob_map['%s' % mob.dbref ] = room
 
             if len(room.db.mobs) < 2:
@@ -35,11 +38,11 @@ class Zone(Object):
                 for mob in mob_set:
                     mob.move_to(room, quiet=True)
                     mobs.append(mob)
-                    room.db.mobs = mob_set
             else:
                 pass
                 room.db.mobs +=  mob_set
 
+            
     def set_zone_manager(self):
         rooms = self.db.rooms
         zone_map = self.db.zone_map
@@ -61,4 +64,33 @@ class WorldRoom(Room):
         self.db.decor_objects = {}
         self.db.mobs = []
         self.db.zone = None
+
+    def at_object_receive(self, moved_obj, source_location):
+        if hasattr(self, 'manager'):
+            manager = self.db.manager
+            if manager is None:
+                return
+            if moved_obj.has_player:
+                player_map = manager.db.player_map
+                player_map['%s' % moved_obj.name] = self
+                manager.db.player_map = player_map
+                self.db.manager = manager
+            else:
+                return
+        self.post_object_receive(caller=moved_obj)
         
+    def post_object_receive(self, caller):
+        pass
+       
+    def at_object_leave(self, moved_obj, target_location):
+        if hasattr(self, 'manager'):
+            manager = self.db.manager
+            if moved_obj.player:
+                player_map = manager.db.player_map
+                try:
+                    del player_map[moved_obj.name]
+                except KeyError:
+                    pass
+                manager.db.player_map = player_map
+                self.db.manager = manager
+ 

@@ -59,6 +59,8 @@ darkness to try and find it.  As you take in your surroundings you think you hea
 
 of feet off in the distance to the north.
 #
+@open south;s = dtstl1
+#
 @set here/decor_object = { 'Pile of corpses': 'A medium sized pile of dead bodies, all will bullet holes in the head.  The smell is a mixture of decay, blood and decomposition.' }
 #
 @teleport dtstl1
@@ -66,6 +68,62 @@ of feet off in the distance to the north.
 south
 #
 @desc
-Placheholder description until I feel like writing something good here.
+You slowly walk south towards the old Courthouse and Police Department.  The large buildings to your 
+
+left are crumbling, causing random pieces of large concrete to fall on to the sidewalk you are walking
+
+on.  One of the largest buildings you can see hase a large, blackened hole in the middle of it though
+
+the fire had long burnt out. In the early days of the infection, the military responded with the full
+
+force of their armorment.  This is likely a display of that force, what little it did.  You can see some
+
+figures huddled around a trashcan fire. Down the road you can see the path to the left that leads to the
+
+remanants of the old Courthouse.
+#
+@open north;n = dtstl1
+#
+@dig Tucker and Chestnut;dtstl4;downtown_stl_room: world.room.WorldRoom
+#
+@open south;s = dtstl4
+#
+@set here/decor_object = { "Trashcan Fire": "There is a dented and beaten up trashcan containing a decent sized fire.  There are figures standing around the trashcan, huddled up for warmth.
+#
+south
+#
+@desc
+You stick to the shadows as you slowly make your way down Tucker Avenue; what used to be a main roadway
+
+before the infection hit.  The silence is so sustinct that every move you make seems to echo throughout
+
+the entire city and all of its twisting steel and concrete.  The stench of death is gripping your senses
+
+more strongly the closer you make it to the old Courthouse.  You notice the shambling silohuettes of the 
+
+walking dead milling about in the courtyard area of the Courthouse.  Down the road to the south further
+
+you can make out the old police department.  It seems like there is smoke coming out of the building.
+#
+@open north;n  = dtstl3
+#
+@dig Tucker and Market;dtstl5;downtown_stl_room: world.room.WorldRoom
+#
+@open south;s = dtstl5
+#
+south
+#
+@desc
+Continuing down Tucker Avenue you notice a make shift barricade at the following intersection. It's made
+
+from the rusting burned out carcasses of cars and buses.  It has recently been put in place from what you
+
+tell.  It seems that someone, somewhere is still surviving and perhaps trying to thrive.  As you look towards
+
+the Police Department building, you see that what you thought was smoke is really just exhaust from an active
+
+heating unit.  Someone is assuredly in there, and they have...electricity.
+#
+@open north;n = dtstl4
 #
 @teleport Limbo

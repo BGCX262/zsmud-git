@@ -18,6 +18,7 @@ class Npc(Object):
         self.db.attributes = attributes
         self.db.in_combat = False
         self.db.corpse = False
+        self.db.destroy_me = False
         self.db.target = None
         self.db.difficulty_rating = 'average' #(average, hard, very_hard, impossible)
         self.aliases.append('mob_runner')
@@ -157,7 +158,11 @@ class Npc(Object):
     def death(self):
         self.db.target = None
         self.db.corpse = True
-        self.aliases.append('corpse')
+        l = self.location
+        mobs = l.db.mobs
+        mobs.remove(self)
+        l.db.mobs = mobs
+        self.aliases = [ 'corpse' ]
         self.key = "Corpse of %s" % self.name
         
         

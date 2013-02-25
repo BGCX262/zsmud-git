@@ -35,8 +35,12 @@ class SurvivorClass(Character):
         self.db.attributes = attributes
         self.aliases += 'character_runner'
 
+    def at_disconnect(self):
+        self.prelogout_location = self.location
+
     def at_post_login(self):
         self.cmdset.add(CharacterCmdSet)
+        self.location = self.db.prelogout_location
     
     def award_currency(self, amount, type='dollars'):
         """
@@ -190,12 +194,9 @@ class SurvivorClass(Character):
                                 'You unlease a hail of lead upon %s dealing %s damage.' % (t.name, damage),
                             ]
             melee_hit_texts = []
-            print w.db.type
-            print w
             if w is None:
                 ht = random.choice(unarmed_hit_texts)
-            if 'gun' in w.db.type:
-                print w
+            elif 'gun' in w.db.type:
                 ht = random.choice(gun_hit_texts)
             self.msg(ht) 
            
